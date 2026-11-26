@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>일정 관리 프로그램</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-container">
+    <!-- 상단 영역: 타이틀, 일정 추가 버튼, 오늘 일정 배너 -->
+    <header class="app-header">
+      <div class="header-top">
+        <div class="title-group">
+          <h1>일정 관리</h1>
+          <span id="todayDateBadge" class="today-badge"></span>
+          <span id="syncStatusBadge" class="sync-badge syncing">Firebase 연결 중...</span>
+        </div>
+        <button type="button" id="openAddModalBtn" class="btn-primary">
+          + 일정 추가
+        </button>
+      </div>
+
+      <!-- 오늘 일정 표시 영역 -->
+      <section class="today-schedule-box" aria-label="오늘의 일정">
+        <div class="today-box-header">
+          <button type="button" id="todayTitleLink" class="today-title-link" title="클릭하면 오늘 날짜 달력으로 이동합니다">
+            <h2>오늘의 일정</h2>
+            <span id="todayCount" class="count-pill">0건</span>
+          </button>
+        </div>
+        <div id="todayScheduleList" class="today-schedule-list">
+          <p class="today-empty">일정을 불러오는 중입니다...</p>
+        </div>
+      </section>
+    </header>
+
+    <!-- 하단 영역: 월간 달력 / 리스트 뷰 -->
+    <main class="calendar-section">
+      <div class="calendar-controls">
+        <div class="month-nav">
+          <button type="button" id="prevMonthBtn" class="btn-icon" aria-label="이전 달">&lt;</button>
+          <h2 id="currentMonthLabel" class="current-month">2026년 11월</h2>
+          <button type="button" id="nextMonthBtn" class="btn-icon" aria-label="다음 달">&gt;</button>
+        </div>
+
+        <!-- 달력 / 리스트 전환 버튼 -->
+        <div class="view-toggle" role="group" aria-label="보기 방식 전환">
+          <button type="button" id="calendarViewBtn" class="toggle-btn active">달력</button>
+          <button type="button" id="listViewBtn" class="toggle-btn">리스트</button>
+        </div>
+      </div>
+
+      <!-- 달력 뷰 (기본) -->
+      <div id="calendarViewContainer" class="calendar-grid-wrapper">
+        <div class="calendar-weekdays">
+          <div class="sun">일</div>
+          <div>월</div>
+          <div>화</div>
+          <div>수</div>
+          <div>목</div>
+          <div>금</div>
+          <div class="sat">토</div>
+        </div>
+        <div id="calendarDays" class="calendar-days">
+          <!-- JS에서 날짜 셀 렌더링 -->
+        </div>
+      </div>
+
+      <!-- 리스트 뷰 -->
+      <div id="listViewContainer" class="schedule-list-wrapper hidden">
+        <!-- JS에서 해당 월 일정 리스트 렌더링 -->
+      </div>
+    </main>
+  </div>
+
+  <!-- 일정 추가/수정 모달 -->
+  <div id="scheduleModal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="modalTitle">새 일정 추가</h3>
+        <button type="button" id="closeModalBtn" class="btn-close" aria-label="닫기">&times;</button>
+      </div>
+      <form id="scheduleForm" class="modal-body">
+        <input type="hidden" id="scheduleId" />
+
+        <div class="form-group">
+          <label for="scheduleDate">날짜 <span class="required">*</span></label>
+          <input type="date" id="scheduleDate" required />
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="scheduleTime">시간 (선택)</label>
+            <input type="time" id="scheduleTime" />
+          </div>
+          <div class="form-group">
+            <label for="scheduleColor">표시 색상</label>
+            <select id="scheduleColor">
+              <option value="blue">파랑 (기본)</option>
+              <option value="green">초록 (개인/운동)</option>
+              <option value="amber">주황 (중요)</option>
+              <option value="purple">보라 (학습/기타)</option>
+              <option value="rose">분홍 (약속)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="scheduleTitle">일정 제목 <span class="required">*</span></label>
+          <input type="text" id="scheduleTitle" placeholder="예: 프로젝트 회의, 병원 예약" maxlength="40" required />
+        </div>
+
+        <div class="form-group">
+          <label for="scheduleMemo">메모 (선택)</label>
+          <textarea id="scheduleMemo" rows="3" placeholder="세부 내용을 입력하세요"></textarea>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" id="deleteScheduleBtn" class="btn-danger hidden">삭제</button>
+          <div class="footer-right">
+            <button type="submit" id="saveScheduleBtn" class="btn-primary">저장</button>
+            <button type="button" id="cancelModalBtn" class="btn-secondary">취소</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ES Module 방식으로 Firebase SDK 및 앱 스크립트 로드 -->
+  <script type="module" src="app.js"></script>
+</body>
+</html>
