@@ -371,7 +371,7 @@ function refreshUI() {
 
 // Realtime Database 실시간 구독 시작
 function subscribeSchedules() {
-  setSyncStatus('syncing', 'Firebase 동기화 중...');
+  setSyncStatus('syncing', 'Firebase 동기화 중입니다.');
 
   onValue(
     schedulesRef,
