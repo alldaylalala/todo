@@ -386,7 +386,8 @@ function subscribeSchedules() {
         schedules = [];
       }
       //setSyncStatus('connected', 'Firebase 연결됨');
-      syncStatusBadge.classList.add('hidden');
+      //setSyncStatus('connected', 'Firebase 연결됨'); 
+      syncStatusBadge.classList.add('hidden');//연결되었을때는 표시안함.
       refreshUI();
     },
     (error) => {
